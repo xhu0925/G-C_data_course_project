@@ -34,7 +34,6 @@ names(extractedHAR) <- gsub("mean()","mean",names(extractedHAR))
 names(extractedHAR) <- gsub("std()","standard deviation",names(extractedHAR))
 names(extractedHAR) <- gsub("BodyAcc","body acceleration",names(extractedHAR))
 names(extractedHAR) <- gsub("GravityAcc","gravity acceleration",names(extractedHAR))
-names(extractedHAR) <- gsub("GravityAcc","gravity acceleration",names(extractedHAR))
 names(extractedHAR) <- gsub("BodyGyro","body gyroscope",names(extractedHAR))
 names(extractedHAR) <- gsub("Jerk"," jerk signal",names(extractedHAR))
 names(extractedHAR) <- gsub("Mag"," magnitude",names(extractedHAR))
@@ -42,6 +41,12 @@ names(extractedHAR) <- gsub("gravityMean"," gravity mean",names(extractedHAR))
 names(extractedHAR) <- gsub("Bodybody","body",names(extractedHAR))
 names(extractedHAR) <- gsub("^t","time ",names(extractedHAR))
 names(extractedHAR) <- gsub("^f","frequency ",names(extractedHAR))
-
+##check all variable names have been labeled appropriately
 names(extractedHAR)
+
 ##Step 5: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+groupeddata<- extractedHAR %>%
+        group_by(subject_id, activity)
+tidydata <- groupeddata %>%
+        summarise_all(.funs=mean)
+write.table(tidydata,file="final tidy data.txt", sep="\t", row.name=FALSE)
